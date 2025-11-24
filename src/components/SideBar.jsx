@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useState } from "react";
+import { useAppContext } from "../context/AppContext";
+import { assets } from "../assets/assets";
 
 const SideBar = () => {
+  const { chats, setSelectedChat, theme, setTheme, user } = useAppContext();
+  const [search, setSearch] = useState("");
   return (
-    <div>SideBar</div>
-  )
-}
+    <div
+      className="flex flex-col h-screen min-w-72 p-5 dark:bg-gradient-to-b 
+  from-[#242124]/30 to-[#000000]/30 border-r border-[#80609F]/30 
+  backdrop-blur-3xl transition-all duration-500"
+    >
+      {/* Logo Sec */}
+      <img
+        src={theme === "dark" ? assets.logo_full : assets.logo_full_dark}
+        alt=""
+        className="w-full max-w-48"
+      />
 
-export default SideBar
+      {/* Adding a new chat button */}
+    </div>
+  );
+};
+
+export default SideBar;

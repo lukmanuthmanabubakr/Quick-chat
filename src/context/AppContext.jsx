@@ -4,7 +4,7 @@ import { dummyChats, dummyUserData } from "../assets/assets";
 
 const AppContext = createContext();
 
-export const AppContextprovider = ({ children }) => {
+export const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [chats, setChats] = useState([]);
@@ -51,9 +51,14 @@ export const AppContextprovider = ({ children }) => {
     selectedChat,
     setSelectedChat,
     theme,
+    setTheme,
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={value}>
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 export const useAppContext = () => useContext(AppContext);
