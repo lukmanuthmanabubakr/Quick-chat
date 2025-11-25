@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
-import { useAppContext } from '../context/AppContext'
+import React, { useState } from "react";
+import { useAppContext } from "../context/AppContext";
 
 const ChatBox = () => {
-  const {selectedChat, theme} = useAppContext()
+  const { selectedChat, theme } = useAppContext();
 
-  const [messages, setMessages] = useState([])
-  return (
-    <div>ChatBox</div>
-  )
-}
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  return <div>ChatBox</div>;
+};
 
-export default ChatBox
+export default ChatBox;
