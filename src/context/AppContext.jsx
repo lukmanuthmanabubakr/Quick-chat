@@ -26,7 +26,7 @@ export const AppContextProvider = ({ children }) => {
     } else {
       document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem
+    localStorage.setItem('theme', theme)
   }, [theme]);
 
   useEffect(() => {
