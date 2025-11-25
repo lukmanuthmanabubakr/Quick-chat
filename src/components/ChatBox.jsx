@@ -1,7 +1,8 @@
 import React from 'react'
+import { useAppContext } from '../context/AppContext'
 
 const ChatBox = () => {
-  const {selectedChat}
+  const {selectedChat, theme} = useAppContext
   return (
     <div>ChatBox</div>
   )
