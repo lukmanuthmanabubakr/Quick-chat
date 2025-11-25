@@ -3,7 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import moment from "moment";
 
-const SideBar = () => {
+const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
   const { chats, setSelectedChat, theme, setTheme, user, navigate } =
     useAppContext();
   const [search, setSearch] = useState("");
@@ -137,7 +137,11 @@ const SideBar = () => {
         )}
       </div>
 
-      <img src={assets.close_icon} alt="" className="absolute top-3 right-3 w-5 h-5 cursor-pointer md:hidden not-dark:invert"/>
+      <img
+        src={assets.close_icon}
+        alt=""
+        className="absolute top-3 right-3 w-5 h-5 cursor-pointer md:hidden not-dark:invert"
+      />
     </div>
   );
 };
