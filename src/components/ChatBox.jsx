@@ -9,6 +9,13 @@ const ChatBox = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [prompt, setPrompt] = useState("");
+  const [mode, setMode] = useState("text");
+  const [isPublished, setIsPublished] = useState(false);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+  };
   useEffect(() => {
     if (selectedChat) {
       setMessages(selectedChat.messages);
@@ -31,25 +38,42 @@ const ChatBox = () => {
             </p>
           </div>
         )}
-        {messages.map((message, index) => <Message key={index} message={message}/>)}
+        {messages.map((message, index) => (
+          <Message key={index} message={message} />
+        ))}
 
         {/* Loading Animation */}
-        {
-          loading && <div className="loader flex items-center gap-1.5">
-          <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce">
+        {loading && (
+          <div className="loader flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
           </div>
-          <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce">
-          </div>
-          <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce">
-          </div>
-
-          </div>
-        }
+        )}
       </div>
 
       {/* Prompt Box */}
       <form>
-        
+        <select
+          onChange={(e) => setMode(e.target.value)}
+          value={mode}
+          className="text-sm pl-3 pr-2 outline-none"
+        >
+          <option className="dark:bg-purple-900" value="text">
+            Text
+          </option>
+          <option className="dark:bg-purple-900" value="image">
+            Image
+          </option>
+        </select>
+        <input
+          onChange={(e) => setPrompt(e.target.value)}
+          value={prompt}
+          type="text"
+          placeholder="Ask me anything..."
+          className="flex-1 w-full text-sm outline-none"
+          required
+        />
       </form>
     </div>
   );
