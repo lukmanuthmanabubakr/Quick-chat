@@ -78,6 +78,28 @@ const ChatBox = () => {
           </div>
         )}
       </div>
+      {mode === "image" && (
+        <div className="w-full max-w-2xl mx-auto mb-3 animate-in fade-in slide-in-from-top-2 duration-300">
+          <label className="inline-flex items-center gap-3 px-4 py-2.5 rounded-full bg-white/50 dark:bg-[#583C79]/20 border border-gray-300 dark:border-[#80609F]/30 cursor-pointer hover:bg-white/70 dark:hover:bg-[#583C79]/30 transition-all">
+            <div className="relative inline-flex items-center">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={isPublished}
+                onChange={(e) => setIsPublished(e.target.checked)}
+              />
+              <div className="w-9 h-5 bg-gray-300 dark:bg-gray-600 rounded-full peer-checked:bg-gradient-to-r peer-checked:from-[#A456F7] peer-checked:to-[#3D81F6] transition-all duration-300"></div>
+              <span className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-4 shadow-sm"></span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🌐</span>
+              <p className="text-xs sm:text-sm font-medium">
+                Publish Generated Image to Community
+              </p>
+            </div>
+          </label>
+        </div>
+      )}
 
       {/* Prompt Box */}
       <form
