@@ -30,6 +30,7 @@ const ChatBox = () => {
             </p>
           </div>
         )}
+        {messages.map((message, index) =>)}
       </div>
 
       {/* Prompt Box */}
