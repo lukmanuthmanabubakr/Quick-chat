@@ -53,7 +53,7 @@ const ChatBox = () => {
       </div>
 
       {/* Prompt Box */}
-      <form>
+      <form className="bg-primary/20 dark:bg-[#583C79]/30 border border-primary dark:border-[#80609F]/30 rounded-full w-full max-w-2xl p-3 pl-4 mx-auto flex gap-4 items-center">
         <select
           onChange={(e) => setMode(e.target.value)}
           value={mode}
@@ -74,6 +74,9 @@ const ChatBox = () => {
           className="flex-1 w-full text-sm outline-none"
           required
         />
+        <button disabled={loading}>
+          <img src={loading ? assets.stop_icon : assets.send_icon} alt="" className="w-8 cursor-pointer"/>
+        </button>
       </form>
     </div>
   );
