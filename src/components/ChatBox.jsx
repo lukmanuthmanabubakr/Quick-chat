@@ -48,7 +48,9 @@ const ChatBox = () => {
       </div>
 
       {/* Prompt Box */}
-      <form></form>
+      <form>
+        
+      </form>
     </div>
   );
 };
