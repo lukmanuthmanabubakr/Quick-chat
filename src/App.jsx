@@ -10,19 +10,29 @@ import CheckEmail from "./pages/CheckEmail";
 import VerifyEmail from "./pages/VerifyEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import Loading from "./pages/Loading";
+import NotVerified from "./pages/NotVerified";
 import { assets } from "./assets/assets";
 import "./assets/prism.css";
 import { useAppContext } from "./context/AppContext";
 import { Toaster } from "react-hot-toast";
+import Loading from "./pages/Loading";
 
 const App = () => {
   const { user, loadingUser } = useAppContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { pathname } = useLocation();
 
+  console.log("=== APP COMPONENT RENDER ===");
+  console.log("1. Current pathname:", pathname);
+  console.log("2. User:", user);
+  console.log("3. LoadingUser:", loadingUser);
+  console.log("4. Token in localStorage:", localStorage.getItem("token"));
+
   // Show loading screen while checking authentication
-  if (pathname === "/loading" || loadingUser) return <Loading />;
+  if (pathname === "/loading" || loadingUser) {
+    console.log("5. Showing loading screen");
+    return <Loading />;
+  }
 
   // Public routes (no authentication required)
   const publicRoutes = [
@@ -31,10 +41,13 @@ const App = () => {
     "/check-email",
     "/verify-email",
     "/forgot-password",
-    "/reset-password"
+    "/reset-password",
+    "/not-verified"
   ];
 
   const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
+  console.log("6. Is public route:", isPublicRoute);
+  console.log("7. User exists:", !!user);
 
   return (
     <>
@@ -49,6 +62,7 @@ const App = () => {
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/not-verified" element={<NotVerified />} />
         </Routes>
       )}
 
