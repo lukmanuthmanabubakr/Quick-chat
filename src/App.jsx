@@ -42,17 +42,19 @@ const App = () => {
     "/verify-email",
     "/forgot-password",
     "/reset-password",
-    "/not-verified"
+    "/not-verified",
   ];
 
-  const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
+  const isPublicRoute = publicRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
   console.log("6. Is public route:", isPublicRoute);
   console.log("7. User exists:", !!user);
 
   return (
     <>
       <Toaster position="top-center" />
-      
+
       {/* Public Routes */}
       {isPublicRoute && (
         <Routes>
@@ -63,6 +65,7 @@ const App = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/not-verified" element={<NotVerified />} />
+          <Route path="*" element={<Login />} />
         </Routes>
       )}
 
@@ -82,7 +85,10 @@ const App = () => {
               )}
 
               <div className="flex h-screen w-screen">
-                <SideBar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+                <SideBar
+                  isMenuOpen={isMenuOpen}
+                  setIsMenuOpen={setIsMenuOpen}
+                />
                 <Routes>
                   <Route path="/" element={<ChatBox />} />
                   <Route path="/credits" element={<Credits />} />
