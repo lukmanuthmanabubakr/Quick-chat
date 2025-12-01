@@ -62,9 +62,9 @@ const ChatBox = () => {
       }
     } catch (error) {
       toast.error(error.message);
-    }finally{
-      setPrompt('')
-      setLoading(false)
+    } finally {
+      setPrompt("");
+      setLoading(false);
     }
   };
 
@@ -227,6 +227,7 @@ const ChatBox = () => {
           className="flex-1 w-full text-sm outline-none bg-transparent"
           required
         />
+
         <button disabled={loading} type="submit">
           <img
             src={loading ? assets.stop_icon : assets.send_icon}
