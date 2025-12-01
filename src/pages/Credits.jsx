@@ -1,21 +1,65 @@
 import React, { useEffect, useState } from "react";
 import { dummyPlans } from "../assets/assets";
 import Loading from "./Loading";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Credits = () => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { token, axios } = useAppContext();
 
   const fetchPlans = async () => {
-    setPlans(dummyPlans);
+    try {
+      const { data } = await axios.get("/api/credit/plan", {
+        headers: { Authorization: token },
+      });
+
+      if (data.success) {
+        setPlans(data.plans);
+      } else {
+        toast.error(data.message || "Failed to fetch plans");
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to fetch plans";
+      toast.error(errorMessage);
+    }
     setLoading(false);
+  };
+
+  const purchasePlan = async (planId) => {
+    try {
+      const { data } = await axios.post(
+        "/api/credit/purchase",
+        { planId },
+        { headers: { Authorization: token } }
+      );
+
+      if (data.session && data.url) {
+        window.location.href = data.url;
+      } else {
+        toast.error(data.message || "Purchase failed");
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Purchase failed. Please try again.";
+      toast.error(errorMessage);
+      throw error;
+    }
   };
 
   useEffect(() => {
     fetchPlans();
   }, []);
 
-  if (loading) return <Loading />;
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="max-w-7xl h-screen overflow-y-scroll mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -76,11 +120,14 @@ const Credits = () => {
                       <span className="text-sm">credits</span>
                       <div className="w-8 h-px bg-gradient-to-r from-transparent via-[#3D81F6] to-transparent"></div>
                     </div>
-                    
+
                     {plan.features && plan.features.length > 0 && (
                       <ul className="space-y-2 text-left w-full">
                         {plan.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm">
+                          <li
+                            key={idx}
+                            className="flex items-start gap-2 text-sm"
+                          >
                             <svg
                               className="w-5 h-5 text-[#A456F7] dark:text-[#8B4FD9] flex-shrink-0 mt-0.5"
                               fill="currentColor"
@@ -102,6 +149,13 @@ const Credits = () => {
                   </div>
 
                   <button
+                    onClick={() => {
+                      toast.promise(purchasePlan(plan._id), {
+                        loading: "Processing...",
+                        success: "Redirecting to payment...",
+                        error: "Purchase failed",
+                      });
+                    }}
                     className={`w-full py-3 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 ${
                       isPro
                         ? "bg-gradient-to-r from-[#A456F7] to-[#3D81F6] text-white shadow-lg hover:shadow-xl hover:scale-105"
