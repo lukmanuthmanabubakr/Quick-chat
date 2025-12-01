@@ -2,10 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import Message from "./Message";
+import toast from "react-hot-toast";
 
 const ChatBox = () => {
-  const containerRef = useRef(null)
-  const { selectedChat, theme } = useAppContext();
+  const containerRef = useRef(null);
+  const { selectedChat, theme, user, axios, token, setUser } = useAppContext();
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +24,48 @@ const ChatBox = () => {
   ];
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+      if (!user) return toast("Login to ask me anything");
+      setLoading(true);
+
+      const promptCopy = prompt;
+      setPrompt(``);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "user",
+          content: prompt,
+          timestamp: Date.now(),
+          isImage: false,
+        },
+      ]);
+
+      const { data } = await axios.post(
+        `/api/message/${mode}`,
+        { chatId: selectedChat._id, prompt, isPublished },
+        { headers: { Authorization: token } }
+      );
+
+      if (data.success) {
+        setMessages((prev) => [...prev, data.reply]);
+
+        //Remove credits
+        if (mode === "image") {
+          setUser((prev) => ({ ...prev, credits: prev.credits - 2 }));
+        } else {
+          setUser((prev) => ({ ...prev, credits: prev.credits - 1 }));
+        }
+      } else {
+        toast.error(data.message);
+        setPrompt(promptCopy);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }finally{
+      setPrompt('')
+      setLoading(false)
+    }
   };
 
   useEffect(() => {
@@ -50,14 +92,14 @@ const ChatBox = () => {
 
   const currentMode = modes.find((m) => m.value === mode);
 
-  useEffect(()=>{
-    if(containerRef.current){
+  useEffect(() => {
+    if (containerRef.current) {
       containerRef.current.scrollTo({
         top: containerRef.current.scrollHeight,
         behavior: "smooth",
-      })
+      });
     }
-  }, [messages])
+  }, [messages]);
 
   return (
     <div className="flex-1 flex flex-col justify-between m-5 md:m-10 xl:mx-30 max-md:mt-14 2xl:pr-40">

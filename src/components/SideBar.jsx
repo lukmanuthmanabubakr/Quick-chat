@@ -44,29 +44,25 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
 
       <style jsx>{`
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
-
+        
         @keyframes scaleIn {
-          from {
+          from { 
             opacity: 0;
             transform: scale(0.9);
           }
-          to {
+          to { 
             opacity: 1;
             transform: scale(1);
           }
         }
-
+        
         .animate-fadeIn {
           animation: fadeIn 0.2s ease-out;
         }
-
+        
         .animate-scaleIn {
           animation: scaleIn 0.2s ease-out;
         }
@@ -90,7 +86,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
     setToken,
     token,
   } = useAppContext();
-
+  
   const [search, setSearch] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [chatToDelete, setChatToDelete] = useState(null);
@@ -117,6 +113,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
       if (data.success) {
         setChats((prev) => prev.filter((chat) => chat._id !== chatToDelete));
         await fetchUsersChats();
+        toast.success('Chat Deleted');
       }
       setShowDeleteModal(false);
       setChatToDelete(null);

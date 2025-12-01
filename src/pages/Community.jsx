@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { dummyPublishedImages } from "../assets/assets";
 import Loading from "./Loading";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Community = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { axios } = useAppContext();
 
   const fetchImages = async () => {
-    setImages(dummyPublishedImages);
+    try {
+      const { data } = await axios.get("/api/user/published-images");
+      if (data.success) {
+        setImages(data.images);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
     setLoading(false);
   };
 
@@ -56,7 +68,7 @@ const Community = () => {
                     alt={`Created by ${item.userName}`}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                   />
-                  
+
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                   <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
