@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { dummyChats, dummyUserData } from "../assets/assets";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -26,9 +25,15 @@ export const AppContextProvider = ({ children }) => {
         setUser(data.user);
       } else {
         toast.error(data.message);
+        localStorage.removeItem("token");
+        setToken(null);
       }
     } catch (error) {
-      toast.error(error.message);
+      console.error("Fetch user error:", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to fetch user";
+      toast.error(errorMessage);
+      localStorage.removeItem("token");
+      setToken(null);
     } finally {
       setLoadingUser(false);
     }
@@ -43,7 +48,9 @@ export const AppContextProvider = ({ children }) => {
       });
       await fetchUsersChats();
     } catch (error) {
-      toast.error(error.message);
+      console.error("Create chat error:", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to create chat";
+      toast.error(errorMessage);
     }
   };
 
@@ -54,7 +61,6 @@ export const AppContextProvider = ({ children }) => {
       });
       if (data.success) {
         setChats(data.chats);
-        //If the user has no chat, create new one
         if (data.chats.length === 0) {
           await createNewChat();
           return fetchUsersChats();
@@ -65,7 +71,9 @@ export const AppContextProvider = ({ children }) => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      console.error("Fetch chats error:", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to fetch chats";
+      toast.error(errorMessage);
     }
   };
 
